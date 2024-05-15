@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【设计模式】对象池模式——以吸血鬼幸存者游戏为例 | KAKA的个人博客</title><meta name="author" content="kaka"><meta name="copyright" content="kaka"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对象池(Object Pool)是一种常见且有效的优化技术之一，特别是在处理大量频繁创建和销毁的游戏对象时。Unity中可以使用对象池进行性能优化，提高游戏的运行效率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【设计模式】对象池模式——以吸血鬼幸存者游戏为例">
+<meta property="og:url" content="http://example.com/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/index.html">
+<meta property="og:site_name" content="KAKA的个人博客">
+<meta property="og:description" content="对象池(Object Pool)是一种常见且有效的优化技术之一，特别是在处理大量频繁创建和销毁的游戏对象时。Unity中可以使用对象池进行性能优化，提高游戏的运行效率。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/cover/op.jpg">
+<meta property="article:published_time" content="2024-02-06T00:03:19.000Z">
+<meta property="article:modified_time" content="2024-05-11T14:52:25.905Z">
+<meta property="article:author" content="kaka">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/cover/op.jpg"><link rel="shortcut icon" href="/img/KA.png"><link rel="canonical" href="http://example.com/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【设计模式】对象池模式——以吸血鬼幸存者游戏为例',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-11 22:52:25'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><meta name="generator" content="Hexo 7.1.1"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/cover/op.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="KAKA的个人博客"><span class="site-name">KAKA的个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【设计模式】对象池模式——以吸血鬼幸存者游戏为例</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-06T00:03:19.000Z" title="发表于 2024-02-06 08:03:19">2024-02-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-11T14:52:25.905Z" title="更新于 2024-05-11 22:52:25">2024-05-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【设计模式】对象池模式——以吸血鬼幸存者游戏为例"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>对象池（Object Pool）是一种优化技术，用于减少游戏运行时的性能开销。这种方法可以显著提高游戏性能，特别是在需要频繁生成和销毁对象的游戏场景中。对象池避免了频繁的内存分配和回收，从而减少了垃圾回收（Garbage Collection）的次数，使游戏运行更加流畅。</p>
+<h1 id="什么是对象池"><a href="#什么是对象池" class="headerlink" title="什么是对象池"></a>什么是对象池</h1><p>对象池是一种管理和重复使用游戏对象的机制。通过预先创建和存储一定数量的对象（如敌人、武器、水晶等），并在需要时重复使用这些对象，而不是每次需要时都创建新对象。</p>
+<p>其核心思想是：使用完不直接删除，而是将其放回池子里，需要的时候取出。主要优化两点：</p>
+<p>1、防止对象被频繁创建和删除，从而内存抖动、频繁GC（垃圾回收）</p>
+<p>2、对象初始化成本较高</p>
+<h1 id="对象池的功能"><a href="#对象池的功能" class="headerlink" title="对象池的功能"></a>对象池的功能</h1><p>1、借用：在游戏中，经常会遇到需要动态生成大量的临时对象的情况，比如子弹、爆炸效果等。使用对象池的“借用”策略，可以避免频繁的实例化和销毁操作。当需要新对象时，从对象池中借用一个对象，而不是通过new操作符创建新实例。这减少了内存分配的开销，提高了性能。</p>
+<p>2、归还：使用完对象后，通过“归还”策略将对象放回对象池。这样可以重复使用对象，而不是销毁它们，减少了垃圾回收的频率，降低了内存开销。</p>
+<p>3、预热：在游戏启动或者关键时刻，通过“预热”策略可以提前创建一定数量的对象，减少游戏运行时的对象池扩容和性能波动。这样可以在游戏开始时就确保对象池中有足够的对象，避免在游戏运行时动态创建对象，从而提高游戏的启动速度和稳定性。</p>
+<p>4、缩小：当对象池中的对象过多时，可以通过“缩小”策略来释放一部分对象，以降低内存占用。这通常在游戏运行时的某个合适时机触发，例如切换场景或者进入后台时。</p>
+<p>5、重置：有些对象在被归还到对象池后，可能会带有之前的状态，比如位置、速度等。通过“重置”策略，可以在对象被借用前将其状态重置为初始状态，确保对象在被重新使用时是干净的。</p>
+<h1 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h1><p>1、创建一个单例的对象池类，并在Awake函数中初始化对象池字典。<br>对象池字典使用游戏对象的名称作为键，值为对象池列表。对象池列表中存储着一批游戏对象。<br>2、在GetObject函数中，首先判断对象池字典中是否包含指定名称的对象池。如果不存在，则返回null。否则，从对象池列表中找到一个未激活状态的游戏对象，如果找不到则实例化一个新的游戏对象并添加到对象池列表中。最后将游戏对象设置为激活状态并返回。<br>3、在ReturnObject函数中，将传入的游戏对象设置为不激活状态，从而标记为可重用的对象。</p>
+<h1 id="实例——吸血鬼幸存者（VampireSurvivours）"><a href="#实例——吸血鬼幸存者（VampireSurvivours）" class="headerlink" title="实例——吸血鬼幸存者（VampireSurvivours）"></a>实例——吸血鬼幸存者（VampireSurvivours）</h1><ol>
+<li>创建一个<code>Dictionary</code>，用于存储对象队列，键是对象的类型，值是对象的队列。游戏玩法是主角每发出一个攻击（weapon），造成一定伤害值（damage），击败一个敌人（enemy）后，掉落一定的经验（crystal）。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> ObjectPooling instance;    </span><br><span class="line">    Dictionary&lt;<span class="built_in">string</span>, Queue&lt;GameObject&gt;&gt; poolingDict = <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, Queue&lt;GameObject&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">int</span> initNumEnemy = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">int</span> initNumWeapon = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">int</span> initNumCrystal = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">int</span> initNumDamage = <span class="number">500</span>;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><code>Initialize</code>方法中，使用枚举类型<code>CharacterData.CharacterType</code>、<code>WeaponData.WeaponType</code>和<code>CrystalData.CrystalType</code>来创建不同类型的对象队列，并将它们添加到字典中。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Initialize</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">foreach</span>(CharacterData.CharacterType characterType <span class="keyword">in</span> Enum.GetValues(<span class="keyword">typeof</span>(CharacterData.CharacterType)))</span><br><span class="line">	&#123;</span><br><span class="line">    	<span class="keyword">if</span> (IsPlayer(characterType)) <span class="keyword">continue</span>;Queue&lt;GameObject&gt; newQue = <span class="keyword">new</span> Queue&lt;GameObject&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; initNumEnemy; j++)&#123;newQue.Enqueue(CreateObject(characterType));&#125;</span><br><span class="line">		poolingDict.Add(characterType.ToString(), newQue);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//...weaponType、crystalType同CharacterData一样</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; initNumDamage; j++)&#123; damageQue.Enqueue(CreateObject(<span class="string">&quot;damage&quot;</span>));&#125;</span><br><span class="line">poolingDict.Add(<span class="string">&quot;damage&quot;</span>, damageQue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用传入的类型参数<code>type</code>，将其转换为字符串，并在<code>poolingDict</code>字典中查找对应的对象队列。如果找到的队列中有可用的对象（即队列的<code>Count</code>大于0），则从队列中移除（<code>Dequeue</code>）并返回这个对象。如果队列为空，说明没有可用的对象，那么就调用<code>CreateObject</code>方法来创建一个新的对象，并返回它。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameObject <span class="title">GetObject</span>&lt;<span class="title">T</span>&gt;(<span class="params">T type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(instance.poolingDict[type.ToString()].Count &gt; <span class="number">0</span>)&#123;<span class="keyword">return</span> instance.poolingDict[type.ToString()].Dequeue();&#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;<span class="keyword">return</span> CreateObject(type);&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用<code>switch</code>语句根据<code>type</code>的值来实例化不同的预制体（Prefab）。如果创建的对象是某些特定类型的武器，并且这些武器应该是玩家的子对象，那么<code>isParentPlayer</code>会被设置为<code>true</code>。接着，根据<code>isParentPlayer</code>的值，使用<code>SetParent</code>方法将新对象的父对象设置为相应的游戏对象，并且保持其局部变换。最后，新对象被设置为非激活状态，并返回这个新创建的对象。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> GameObject <span class="title">CreateObject</span>&lt;<span class="title">T</span>&gt;(<span class="params">T type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GameObject newObject;</span><br><span class="line">    <span class="built_in">bool</span> isParentPlayer = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (type)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="literal">default</span>:</span><br><span class="line">        <span class="keyword">case</span> CharacterData.CharacterType.FlyingEye:</span><br><span class="line">            newObject = Instantiate(instance.flyingEyePrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> CharacterData.CharacterType.Goblin:</span><br><span class="line">            newObject = Instantiate(instance.goblinPrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> CharacterData.CharacterType.Mushroom:</span><br><span class="line">            newObject = Instantiate(instance.mushroomPrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> CharacterData.CharacterType.Skeleton:</span><br><span class="line">            newObject = Instantiate(instance.skeletonPrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> WeaponData.WeaponType.Whip:</span><br><span class="line">            newObject = Instantiate(instance.whipPrefab);</span><br><span class="line">		<span class="keyword">if</span>(ItemAssets.GetInstance().GetWeaponData(WeaponData.WeaponType.Whip).GetParent().Equals(WeaponData.Parent.Player))</span><br><span class="line">                isParentPlayer = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> WeaponData.WeaponType.Bible:</span><br><span class="line">            newObject = Instantiate(instance.biblePrefab);</span><br><span class="line">            <span class="keyword">if</span> (ItemAssets.GetInstance().GetWeaponData(WeaponData.WeaponType.Bible).GetParent().Equals(WeaponData.Parent.Player))</span><br><span class="line">                isParentPlayer = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> WeaponData.WeaponType.Axe:</span><br><span class="line">            newObject = Instantiate(instance.axePrefab);</span><br><span class="line">            <span class="keyword">if</span> (ItemAssets.GetInstance().GetWeaponData(WeaponData.WeaponType.Axe).GetParent().Equals(WeaponData.Parent.Player))</span><br><span class="line">                isParentPlayer = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> WeaponData.WeaponType.FireWand:</span><br><span class="line">            newObject = Instantiate(instance.pigeonPrefab);</span><br><span class="line">            <span class="keyword">if</span> (ItemAssets.GetInstance().GetWeaponData(WeaponData.WeaponType.FireWand).GetParent().Equals(WeaponData.Parent.Player))</span><br><span class="line">                isParentPlayer = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> WeaponData.WeaponType.Lightning:</span><br><span class="line">            newObject = Instantiate(instance.lightningPrefab);</span><br><span class="line">            <span class="keyword">if</span> (ItemAssets.GetInstance().GetWeaponData(WeaponData.WeaponType.Lightning).GetParent().Equals(WeaponData.Parent.Player))</span><br><span class="line">                isParentPlayer = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> WeaponData.WeaponType.MagicWand:</span><br><span class="line">            newObject = Instantiate(instance.magicWandPrefab);</span><br><span class="line">            <span class="keyword">if</span> (ItemAssets.GetInstance().GetWeaponData(WeaponData.WeaponType.MagicWand).GetParent().Equals(WeaponData.Parent.Player))</span><br><span class="line">                isParentPlayer = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> CrystalData.CrystalType.blue:</span><br><span class="line">            newObject = Instantiate(instance.blueCrystalPrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> CrystalData.CrystalType.green:</span><br><span class="line">            newObject = Instantiate(instance.greenCrystalPrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> CrystalData.CrystalType.red:</span><br><span class="line">            newObject = Instantiate(instance.redCrystalPrefab);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;damage&quot;</span>:</span><br><span class="line">            newObject = Instantiate(instance.DamageText);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isParentPlayer)</span><br><span class="line">        newObject.transform.SetParent (GameObject.FindWithTag(<span class="string">&quot;Weapon&quot;</span>).transform,<span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        newObject.transform.SetParent (instance.transform,<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    newObject.SetActive(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> newObject;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameObject <span class="title">GetObject</span>&lt;<span class="title">T</span>&gt;(<span class="params">T type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (instance.poolingDict[type.ToString()].Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;<span class="keyword">return</span> instance.poolingDict[type.ToString()].Dequeue();&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;<span class="keyword">return</span> CreateObject(type);&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>ReturnObject泛型方法,将不再需要的游戏对象（例如被击败的敌人）返回到对象池中，以便将来重用。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ReturnObject</span>&lt;<span class="title">T</span>&gt;(<span class="params">GameObject deadEnemy, T type</span>)</span></span><br><span class="line"> &#123;instance.poolingDict[type.ToString()].Enqueue(deadEnemy);&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">kaka</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/">http://example.com/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">KAKA的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></div><div class="post_share"><div class="social-share" data-image="/cover/op.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/03/09/shader%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B%E2%80%94%E2%80%94CurvedWorld/" title="shader学习实例——CurvedWorld"><img class="cover" src="/cover/shader.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">shader学习实例——CurvedWorld</div></div></a></div><div class="next-post pull-right"><a href="/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/" title="【Unity】ScriptableObject应用"><img class="cover" src="/cover/so.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【Unity】ScriptableObject应用</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kaka</div><div class="author-info__description">还在新手期的游戏开发爱好者</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">卡卡立志成为技术宅地下偶像，欢迎来到我的个人博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AF%B9%E8%B1%A1%E6%B1%A0"><span class="toc-number">2.</span> <span class="toc-text">什么是对象池</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%B1%A0%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">3.</span> <span class="toc-text">对象池的功能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.</span> <span class="toc-text">实现步骤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E2%80%94%E2%80%94%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%EF%BC%88VampireSurvivours%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">实例——吸血鬼幸存者（VampireSurvivours）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/16/%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F/" title="吸血鬼幸存者游戏"><img src="/cover/vps.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="吸血鬼幸存者游戏"/></a><div class="content"><a class="title" href="/2024/03/16/%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F/" title="吸血鬼幸存者游戏">吸血鬼幸存者游戏</a><time datetime="2024-03-16T03:43:11.000Z" title="发表于 2024-03-16 11:43:11">2024-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/09/shader%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B%E2%80%94%E2%80%94CurvedWorld/" title="shader学习实例——CurvedWorld"><img src="/cover/shader.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="shader学习实例——CurvedWorld"/></a><div class="content"><a class="title" href="/2024/03/09/shader%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B%E2%80%94%E2%80%94CurvedWorld/" title="shader学习实例——CurvedWorld">shader学习实例——CurvedWorld</a><time datetime="2024-03-09T11:31:38.000Z" title="发表于 2024-03-09 19:31:38">2024-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/" title="【设计模式】对象池模式——以吸血鬼幸存者游戏为例"><img src="/cover/op.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【设计模式】对象池模式——以吸血鬼幸存者游戏为例"/></a><div class="content"><a class="title" href="/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/" title="【设计模式】对象池模式——以吸血鬼幸存者游戏为例">【设计模式】对象池模式——以吸血鬼幸存者游戏为例</a><time datetime="2024-02-06T00:03:19.000Z" title="发表于 2024-02-06 08:03:19">2024-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/" title="【Unity】ScriptableObject应用"><img src="/cover/so.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Unity】ScriptableObject应用"/></a><div class="content"><a class="title" href="/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/" title="【Unity】ScriptableObject应用">【Unity】ScriptableObject应用</a><time datetime="2024-01-10T06:22:07.000Z" title="发表于 2024-01-10 14:22:07">2024-01-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/30/%E3%80%90Unity%E3%80%91%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E7%8E%A9%E5%AE%B6-%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6/" title="【Unity】第三人称玩家+摄像机控制"><img src="/cover/TT.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Unity】第三人称玩家+摄像机控制"/></a><div class="content"><a class="title" href="/2023/12/30/%E3%80%90Unity%E3%80%91%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E7%8E%A9%E5%AE%B6-%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6/" title="【Unity】第三人称玩家+摄像机控制">【Unity】第三人称玩家+摄像机控制</a><time datetime="2023-12-30T03:40:47.000Z" title="发表于 2023-12-30 11:40:47">2023-12-30</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By kaka</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

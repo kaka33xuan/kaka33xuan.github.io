@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【Unity】ScriptableObject应用 | KAKA的个人博客</title><meta name="author" content="kaka"><meta name="copyright" content="kaka"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在unity中使用ScriptableObject">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Unity】ScriptableObject应用">
+<meta property="og:url" content="http://example.com/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="KAKA的个人博客">
+<meta property="og:description" content="在unity中使用ScriptableObject">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/cover/so.png">
+<meta property="article:published_time" content="2024-01-10T06:22:07.000Z">
+<meta property="article:modified_time" content="2024-05-12T09:59:45.868Z">
+<meta property="article:author" content="kaka">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/cover/so.png"><link rel="shortcut icon" href="/img/KA.png"><link rel="canonical" href="http://example.com/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【Unity】ScriptableObject应用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-12 17:59:45'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><meta name="generator" content="Hexo 7.1.1"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/cover/so.png')"><nav id="nav"><span id="blog-info"><a href="/" title="KAKA的个人博客"><span class="site-name">KAKA的个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【Unity】ScriptableObject应用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-01-10T06:22:07.000Z" title="发表于 2024-01-10 14:22:07">2024-01-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-12T09:59:45.868Z" title="更新于 2024-05-12 17:59:45">2024-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【Unity】ScriptableObject应用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>在游戏开发过程中，我们会经常与数据打交道。在游戏开发过程中，我们会经常与数据打交道。假设现在要做一个肉鸽割草类游戏——吸血鬼幸存者，玩家操控的主角在获取了不同武器后会产生不同类型的攻击，这些攻击武器的速度和伤害各不相同。那么显然我要为每一种武器配置好它的属性值。</p>
+<p>实现方式有很多，比如我为每种武器创建预制体，然后写脚本去定义代表子弹各个属性的成员变量，再把脚本挂载到武器预制体上。为了方便在开发时调试我们可以将这些变量声明为 public ，以便我们在编辑器面板中对数据进行改动。</p>
+<p>这么做其实是有缺点的：</p>
+<p>1） 每生成一个武器就会对原来的预制体进行拷贝，其挂载的脚本同样会被拷贝，因此同样的数据会被拷贝多次。而我们规定同一种武器的数据是相同的，也就是同一种武器，不管生成了多少个，它们都共用一套数据。因此，这种方法会创建多余的数据脚本，造成内存浪费。<br>2） 如果预制体上的脚本丢失，之前在 Inspector 面板中配置的数据也会消失。</p>
+<p>不过解决方法有很多，比如：</p>
+<ol>
+<li>我们可以创建一个全局的数据管理中心脚本，通过静态变量去调用每种武器的数据。不过这种数据配置方式不能实现数据的持久化，而且必须要打开代码文件进行修改，面对茫茫代码可能不是那么直观。</li>
+<li>我们还可以用上像 excel，Json，xml 等持久化数据存储的方法，结合 Unity 对准备好的数据文件进行数据读写。这么做的好处是可以实现数据的持久化，比如在游戏过程中修改了数据，退出游戏后下一次打开游戏使用的就是之前修改过的数据。</li>
+</ol>
+<p>ScriptableObject。它也能弥补通过挂载继承自 MonoBehaviour 的脚本来配置数据的一些不足。相较于 excel，Json，xml 这类持久化数据存储的方法，它有些额外的优点，但是也存在一些局限性。我将会在接下来的部分详细说明。</p>
+<h1 id="什么是ScriptableObject"><a href="#什么是ScriptableObject" class="headerlink" title="什么是ScriptableObject"></a>什么是ScriptableObject</h1><ul>
+<li><p>ScriptableObject 是 Unity 提供的一个数据配置存储基类，它是一个可以用来保存大量数据的数据容器，我们可以将它保存为自定义的数据资源文件。</p>
+</li>
+<li><p>ScriptableObject 是一个类似 MonoBehaviour 的基类，继承自 UnityEngine.Object 。要想使用它，需要我们写个脚本去继承 ScriptableObject 。需要注意的是，继承自 SctiptableObject 的脚本无法挂载到游戏物体上，毕竟它不是继承自 MonoBehaviour。</p>
+</li>
+<li><p>ScriptableObject 类的实例会被保存成资源文件（.asset文件），和预制体，材质球，音频文件等类似，都是一种资源文件，存放在 Assets 文件夹下，创建出来的实例也是唯一存在的（单例）。</p>
+</li>
+</ul>
+<h1 id="主要作用"><a href="#主要作用" class="headerlink" title="主要作用"></a>主要作用</h1><ul>
+<li>数据复用（多个对象用同一个数据，节省性能，避免了每个类都去申请空间，浪费）</li>
+<li>配置文件（配置游戏中的数据）</li>
+<li>编辑模式下的数据持久化</li>
+</ul>
+<p><img src="https://kakablog.oss-cn-beijing.aliyuncs.com/img2/adacd71d54b04f25a9839eb465cd399e.png" alt="img"></p>
+<h1 id="应用——吸血鬼幸存者"><a href="#应用——吸血鬼幸存者" class="headerlink" title="应用——吸血鬼幸存者"></a>应用——吸血鬼幸存者</h1><h1 id="步骤一、自定义so数据容器"><a href="#步骤一、自定义so数据容器" class="headerlink" title="步骤一、自定义so数据容器"></a>步骤一、自定义so数据容器</h1><p>比如现在我们要创建一个角色数据类，用序列化方法使得可在inspecter面板上关联或者编辑成员变量。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CharacterData</span> : <span class="title">ScriptableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">SerializeField</span>] Sprite sprite;</span><br><span class="line">    [<span class="meta">SerializeField</span>] RuntimeAnimatorController controller;</span><br><span class="line">    [<span class="meta">SerializeField</span>] CharacterType characterType;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> healthPoint;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> attackPower;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> defencePower;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> speed;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这只是一个类,我们还没有创建数据资源文件</p>
+<h2 id="步骤二、创建数据资源文件"><a href="#步骤二、创建数据资源文件" class="headerlink" title="步骤二、创建数据资源文件"></a>步骤二、创建数据资源文件</h2><p>方法有两种</p>
+<h3 id="1-为类添加CreateAssetMenu特性"><a href="#1-为类添加CreateAssetMenu特性" class="headerlink" title="1. 为类添加CreateAssetMenu特性"></a>1. 为类添加CreateAssetMenu特性</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="string">&quot;Character Data&quot;</span>, menuName = <span class="string">&quot;Scriptable Object/Character Data&quot;</span></span></span><br><span class="line"><span class="meta">public class MyData : ScriptableObject</span></span><br><span class="line"><span class="meta">&#123;</span></span><br><span class="line"><span class="meta">    [SerializeField</span>] Sprite sprite;</span><br><span class="line">    [<span class="meta">SerializeField</span>] RuntimeAnimatorController controller;</span><br><span class="line">    [<span class="meta">SerializeField</span>] CharacterType characterType;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> healthPoint;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> attackPower;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> defencePower;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="built_in">int</span> speed;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-用静态方法创建数据对象"><a href="#2-用静态方法创建数据对象" class="headerlink" title="2. 用静态方法创建数据对象"></a>2. 用静态方法创建数据对象</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SO</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ScriptableObjectTool</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">MenuItem(<span class="string">&quot;ScriptableObject/CreateCharacterData&quot;</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateCharacterData</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            CharacterData asset = ScriptableObject.CreateInstance&lt;CharacterData&gt;();</span><br><span class="line">            </span><br><span class="line">            AssetDatabase.CreateAsset(asset,<span class="string">&quot;Assets/Resources/CharacterDataTest.asset&quot;</span>);</span><br><span class="line">            </span><br><span class="line">            AssetDatabase.SaveAssets();</span><br><span class="line">            </span><br><span class="line">            AssetDatabase.Refresh();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在顶部工具栏点击“so”按钮,即可创建文件</p>
+<h2 id="数据文件的使用"><a href="#数据文件的使用" class="headerlink" title="数据文件的使用"></a>数据文件的使用</h2><p>直接在MonoBehaviour类中作为成员使用</p>
+<ol>
+<li>通过Inspector关联使用</li>
+<li>通过Resource.Load取用</li>
+</ol>
+<h2 id="SO的生命周期函数"><a href="#SO的生命周期函数" class="headerlink" title="SO的生命周期函数"></a>SO的生命周期函数</h2><p>Awake:文件创建时调用</p>
+<p>OnDestroy:对象被销毁时调用</p>
+<p>OnEnable:创建或加载对象时调用</p>
+<p>OnDisable:销毁对象或即将重新加载脚本程序集时调用</p>
+<p>OnValidata:编辑器才会调用的函数,unity在加载脚本或者Inspector窗口中更改值时调用</p>
+<h1 id="非持久数据"><a href="#非持久数据" class="headerlink" title="非持久数据"></a>非持久数据</h1><p>非持久数据指的是不管在编辑器内还是发布后都不会持久化的数据</p>
+<p>我们可以根据自己的需求随时创建对应数据对象进行使用</p>
+<h2 id="使用SO生成非持久化数据"><a href="#使用SO生成非持久化数据" class="headerlink" title="使用SO生成非持久化数据"></a>使用SO生成非持久化数据</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SO</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Test</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> CharacterData data;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            data = ScriptableObject.CreateInstance&lt;CharacteryData&gt;();</span><br><span class="line">            </span><br><span class="line">            Debug.Log(data.atk);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="非持久数据的优点"><a href="#非持久数据的优点" class="headerlink" title="非持久数据的优点"></a>非持久数据的优点</h2><p>节约硬盘空间,仅在内存中使用</p>
+<h1 id="ScriptableObject数据持久化"><a href="#ScriptableObject数据持久化" class="headerlink" title="ScriptableObject数据持久化"></a>ScriptableObject数据持久化</h1><h2 id="Json结合SO存储数据"><a href="#Json结合SO存储数据" class="headerlink" title="Json结合SO存储数据"></a>Json结合SO存储数据</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SO</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SaveManager</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">SerializeField</span>]<span class="keyword">private</span> CharacterData data;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> str = JsonUtility.ToJson(data);</span><br><span class="line">            </span><br><span class="line">            File.WriteAllText(Application.persistentDataPath + <span class="string">&quot;/testJson.json&quot;</span>,str);</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">JSON</span><br><span class="line">&#123;<span class="string">&quot;obj&quot;</span>:&#123;<span class="string">&quot;instanceID&quot;</span>:<span class="number">22550</span>&#125;,<span class="string">&quot;speed&quot;</span>:<span class="number">5.0</span>,<span class="string">&quot;atk&quot;</span>:<span class="number">5</span>,<span class="string">&quot;vc&quot;</span>:&#123;<span class="string">&quot;instanceID&quot;</span>:<span class="number">0</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Json结合SO读取数据"><a href="#Json结合SO读取数据" class="headerlink" title="Json结合SO读取数据"></a>Json结合SO读取数据</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SO</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SaveManager</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">SerializeField</span>]<span class="keyword">private</span> CharacterData data;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> str =File.ReadAllText(Application.persistentDataPath + <span class="string">&quot;/testJson.json&quot;</span>);</span><br><span class="line">            JsonUtility.FromJsonOverwrite(str,data);</span><br><span class="line">            Debug.Log(data.atk);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="SO应用"><a href="#SO应用" class="headerlink" title="SO应用"></a>SO应用</h1><ul>
+<li>配置数据</li>
+</ul>
+<p>SO适合做配置文件,因为配置文件一般是只读的,游戏不会修改配置文件</p>
+<p>SO不需要第三方软件,比如Excel,Json编辑器等</p>
+<ul>
+<li>复用数据</li>
+</ul>
+<p>当我们使用大量细粒度的对象时,比如子弹,许多子弹可以共享同一份数据,而不用为每个子弹都分配内存</p>
+<ul>
+<li>数据带来的多态行为</li>
+<li>使用单例获取数据</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">kaka</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/">http://example.com/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">KAKA的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a></div><div class="post_share"><div class="social-share" data-image="/cover/so.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/" title="【设计模式】对象池模式——以吸血鬼幸存者游戏为例"><img class="cover" src="/cover/op.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【设计模式】对象池模式——以吸血鬼幸存者游戏为例</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/30/%E3%80%90Unity%E3%80%91%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E7%8E%A9%E5%AE%B6-%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6/" title="【Unity】第三人称玩家+摄像机控制"><img class="cover" src="/cover/TT.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【Unity】第三人称玩家+摄像机控制</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/12/30/%E3%80%90Unity%E3%80%91%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E7%8E%A9%E5%AE%B6-%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6/" title="【Unity】第三人称玩家+摄像机控制"><img class="cover" src="/cover/TT.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-05-15</div><div class="title">【Unity】第三人称玩家+摄像机控制</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kaka</div><div class="author-info__description">还在新手期的游戏开发爱好者</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">卡卡立志成为技术宅地下偶像，欢迎来到我的个人博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFScriptableObject"><span class="toc-number">2.</span> <span class="toc-text">什么是ScriptableObject</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">主要作用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85"><span class="toc-number">4.</span> <span class="toc-text">应用——吸血鬼幸存者</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%80%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89so%E6%95%B0%E6%8D%AE%E5%AE%B9%E5%99%A8"><span class="toc-number">5.</span> <span class="toc-text">步骤一、自定义so数据容器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4%E4%BA%8C%E3%80%81%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">步骤二、创建数据资源文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E7%B1%BB%E6%B7%BB%E5%8A%A0CreateAssetMenu%E7%89%B9%E6%80%A7"><span class="toc-number">5.1.1.</span> <span class="toc-text">1. 为类添加CreateAssetMenu特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%94%A8%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1"><span class="toc-number">5.1.2.</span> <span class="toc-text">2. 用静态方法创建数据对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">5.2.</span> <span class="toc-text">数据文件的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SO%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">SO的生命周期函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9D%9E%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE"><span class="toc-number">6.</span> <span class="toc-text">非持久数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8SO%E7%94%9F%E6%88%90%E9%9D%9E%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE"><span class="toc-number">6.1.</span> <span class="toc-text">使用SO生成非持久化数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">6.2.</span> <span class="toc-text">非持久数据的优点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ScriptableObject%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">7.</span> <span class="toc-text">ScriptableObject数据持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Json%E7%BB%93%E5%90%88SO%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">7.1.</span> <span class="toc-text">Json结合SO存储数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Json%E7%BB%93%E5%90%88SO%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">7.2.</span> <span class="toc-text">Json结合SO读取数据</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SO%E5%BA%94%E7%94%A8"><span class="toc-number">8.</span> <span class="toc-text">SO应用</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/16/%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F/" title="吸血鬼幸存者游戏"><img src="/cover/vps.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="吸血鬼幸存者游戏"/></a><div class="content"><a class="title" href="/2024/03/16/%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F/" title="吸血鬼幸存者游戏">吸血鬼幸存者游戏</a><time datetime="2024-03-16T03:43:11.000Z" title="发表于 2024-03-16 11:43:11">2024-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/09/shader%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B%E2%80%94%E2%80%94CurvedWorld/" title="shader学习实例——CurvedWorld"><img src="/cover/shader.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="shader学习实例——CurvedWorld"/></a><div class="content"><a class="title" href="/2024/03/09/shader%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B%E2%80%94%E2%80%94CurvedWorld/" title="shader学习实例——CurvedWorld">shader学习实例——CurvedWorld</a><time datetime="2024-03-09T11:31:38.000Z" title="发表于 2024-03-09 19:31:38">2024-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/" title="【设计模式】对象池模式——以吸血鬼幸存者游戏为例"><img src="/cover/op.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【设计模式】对象池模式——以吸血鬼幸存者游戏为例"/></a><div class="content"><a class="title" href="/2024/02/06/%E3%80%90%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%91%E5%AF%B9%E8%B1%A1%E6%B1%A0%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E4%BB%A5%E5%90%B8%E8%A1%80%E9%AC%BC%E5%B9%B8%E5%AD%98%E8%80%85%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BE%8B/" title="【设计模式】对象池模式——以吸血鬼幸存者游戏为例">【设计模式】对象池模式——以吸血鬼幸存者游戏为例</a><time datetime="2024-02-06T00:03:19.000Z" title="发表于 2024-02-06 08:03:19">2024-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/" title="【Unity】ScriptableObject应用"><img src="/cover/so.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Unity】ScriptableObject应用"/></a><div class="content"><a class="title" href="/2024/01/10/%E3%80%90Unity%E3%80%91ScriptableObject%E5%BA%94%E7%94%A8/" title="【Unity】ScriptableObject应用">【Unity】ScriptableObject应用</a><time datetime="2024-01-10T06:22:07.000Z" title="发表于 2024-01-10 14:22:07">2024-01-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/30/%E3%80%90Unity%E3%80%91%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E7%8E%A9%E5%AE%B6-%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6/" title="【Unity】第三人称玩家+摄像机控制"><img src="/cover/TT.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Unity】第三人称玩家+摄像机控制"/></a><div class="content"><a class="title" href="/2023/12/30/%E3%80%90Unity%E3%80%91%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E7%8E%A9%E5%AE%B6-%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6/" title="【Unity】第三人称玩家+摄像机控制">【Unity】第三人称玩家+摄像机控制</a><time datetime="2023-12-30T03:40:47.000Z" title="发表于 2023-12-30 11:40:47">2023-12-30</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By kaka</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
